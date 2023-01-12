@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <title>Website Kartu Data Penduduk</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.js"></script>
+    </head>
+    <body>
+        
+        <div>Data Kartu Tanda Penduduk</div>
+        <hr>
+        <script>
+            
+            function postData(){
+                const urlpost = "http://localhost:8080/POST";
+                let genID    = Math.floor(Math.random() * 100);
+                let dataText = {"id":genID,"Nama":"Udin","NIK":1000001,"Alamat":"Jl.Diponegoro"};
+                let dataJson = JSON.stringify(dataText);
+                        $.ajax({
+                                url: urlpost,
+                                method: 'POST',
+                                data: dataJson,
+                                contentType: 'application/json',                           
+                                dataType: 'text',
+                                success: function(result){
+                                        console.log(result);
+                                }
+                        });
+            }
+            
+            function putData(){
+                const urlput = "http://localhost:8080/PUT";
+                let editID   = document.getElementById("myid").value;
+                let editNama = document.getElementById("Nama").value;
+                let editNIK = document.getElementById("NIK").value;
+                let editAlamat = document.getElementById("Alamat").value;
+                let dataText = {"id":editID,"Nama":editNama,"NIK":editNIK,"Alamat":editAlamat};
+                let dataJson = JSON.stringify(dataText);
+                        $.ajax({
+                                url: urlput,
+                                method: 'PUT',
+                                data: dataJson,
+                                contentType: 'application/json',                           
+                                dataType: 'text',
+                                success: function(result){
+                                        console.log(result);
+                                }
+                        });
+            }
+                        
+            function getData(){
+                const urlg = "http://localhost:8080/GET";
+                        $.ajax({
+                                url: urlg,
+                                method: 'GET',                         
+                                dataType: 'text',
+                                success: function(result){
+                                        document.getElementById("viewer").innerHTML = result;
+                                }
+                        });
+            }
+            
+            function delData(){
+                let delID    = document.getElementById("myid").value;
+                let dataText = {"id":delID};
+                let dataJson = JSON.stringify(dataText);
+                const urldel = "http://localhost:8080/DELETE";
+                        $.ajax({
+                                url: urldel,
+                                method: 'POST',
+                                data: dataJson,
+                                contentType: 'application/json', 
+                                dataType: 'text',
+                                success: function(result){
+                                        console.log(result);
+                                }
+                        });
+            }
+        </script>
+        
+        ID<input type="text" id="myid" name="myid"></br>
+        Nama<input type="text" id="Nama" name="Nama"></br>
+        NIK<input type="text" id="NIK" name="NIK"></br>
+        Alamat<input type="text" id="Alamat" name="Alamat"></br>
+        Foto<input type="file" id="Foto" name="image"></br>
+        <hr>
+        
+        <button onclick="postData()">POST</button> 
+        <button onclick="putData()">PUT</button>
+        <button onclick="getData()">GET</button>
+        <button onclick="delData()">DELETE</button>  
+        <hr>
+        <div id="viewer"></div>
+    </body>
+</html>
